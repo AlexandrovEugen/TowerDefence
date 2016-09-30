@@ -2,26 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a28a072f-f486-425b-8911-07cdefb3a412" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/TowerDefence/data/Tile.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/TowerDefence/data/TileGrid.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/TowerDefence/data/TileType.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/TowerDefence/helpers/Artist.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/TowerDefence/res/dirt64.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/TowerDefence/res/grass64.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/TowerDefence/res/water64.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/res/dirt64.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/res/enemy64.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/res/grass64.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/res/water64.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/data/Enemy.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/data/Tile.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/data/TileGrid.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/data/TileType.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/helpers/Artist.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/helpers/Clock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/TowerDefence/data/Boot.class" afterPath="$PROJECT_DIR$/out/production/TowerDefence/data/Boot.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/Boot.java" afterPath="$PROJECT_DIR$/src/data/Boot.java" />
     </list>
     <ignored path="TowerDefence.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -598,6 +579,14 @@
       <option name="presentableId" value="Default" />
       <updated>1475111926207</updated>
     </task>
+    <task id="LOCAL-00001" summary="it 's moving'">
+      <created>1475194842912</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1475194842912</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -640,6 +629,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="it 's moving'" />
+    <option name="LAST_COMMIT_MESSAGE" value="it 's moving'" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
