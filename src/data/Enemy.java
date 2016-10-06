@@ -18,7 +18,7 @@ public class Enemy {
     private float x,y, speed;
     private Texture texture;
     private Tile startTile;
-    private boolean first = true;
+    private boolean first = true, alive = true;
     private TileGrid grid;
     private int[] directions;
     private ArrayList<Checkpoint> checkpoints;
@@ -116,25 +116,28 @@ public class Enemy {
     public void setFirst(boolean first) {
         this.first = first;
     }
+
     public  TileGrid getTileGrid(){
         return grid;
     }
-//    private boolean pathContinues(){
-//        boolean answer = true;
-//        Tile myTile = grid.GetTile((int)(x/64),(int)(y/ 64));
-//        Tile nextTile = grid.GetTile((int)(x/64) + 1,(int)(y/ 64));
-//        if (myTile.getType() !=  nextTile.getType()){
-//            answer = false;
-//        }
-//        return  answer;
-//    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    private void Die(){
+        alive = false;
+    }
 
     public void Update(){
         if (first)
             first = false;
         else {
             if (CheckPointReached()) {
-                currentCheckPoint++;
+                if (currentCheckPoint + 1 == checkpoints.size())
+                    Die();
+                else
+                    currentCheckPoint++;
             } else {
                 x += Delta() * checkpoints.get(currentCheckPoint).getxDirection() * speed;
                 y += Delta() * checkpoints.get(currentCheckPoint).getyDirection() * speed;
@@ -164,7 +167,7 @@ public class Enemy {
         //Integer to increment each loop
         int counter = 1;
         while (!found){
-            if (s.getType() != grid.GetTile(s.getXPlace() + dir[0]*counter, s.getYPlace() + dir[1]*counter).getType()){
+            if (s.getXPlace() + dir[0]*counter == grid.getTilesWide() || s.getYPlace() + dir[1]*counter == grid.getTilesHigh() || s.getType() != grid.GetTile(s.getXPlace() + dir[0]*counter, s.getYPlace() + dir[1]*counter).getType()){
                 found  = true;
                 //ove counter back 1 to find tile before new tiletype
                 counter -= 1;
@@ -199,26 +202,25 @@ public class Enemy {
         Tile l = grid.GetTile(s.getXPlace() - 1, s.getYPlace());
         Tile d = grid.GetTile(s.getXPlace(), s.getYPlace() + 1);
 
-        if (s.getType() == u.getType()){
+        if (s.getType() == u.getType() && directions[1] != 1){
             dir[0] = 0;
             dir[1] = -1;
         }
-        else if (s.getType() == r.getType()){
+        else if (s.getType() == r.getType()  && directions[0] != -1){
             dir[0] = 1;
             dir[1] = 0;
         }
-        else if (s.getType() == d.getType()){
+        else if (s.getType() == d.getType()&& directions[1] !=  -1){
             dir[0] = 0;
             dir[1] = 1;
         }
-        else if (s.getType() == l.getType()){
+        else if (s.getType() == l.getType()&& directions[0] != 1){
             dir[0] = -1;
             dir[1] = 0;
         }
         else {
             dir[0] = 2;
             dir[1] = 2;
-            System.out.println("NO WAY");
         }
         return dir;
     }
