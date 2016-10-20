@@ -1,8 +1,6 @@
 package data;
 
-/**
- * Created by Евгений on 29.09.2016.
- */
+
 public enum TileType {
 
     Grass("grass64", true), Dirt("dirt64",false), Water("water64", false), Null("water64", false);

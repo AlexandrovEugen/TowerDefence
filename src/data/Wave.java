@@ -3,9 +3,7 @@ package data;
 import java.util.ArrayList;
 import static helpers.Clock.*;
 
-/**
- * Created by Евгений on 01.10.2016.
- */
+
 
 public class Wave {
     private float timeSinceLastSpawn, spawnTime;
@@ -22,23 +20,23 @@ public class Wave {
         this.enemyList = new ArrayList<>();
         this.enemiesPerWave = enemiesPerWave;
         this.waveCompleted = false;
-        Spawn();
+        spawn();
     }
 
-    public void Update(){
+    public void update(){
         boolean allEnemiesDead = true;
         if (enemyList.size() < enemiesPerWave) {
             timeSinceLastSpawn += Delta();
             if (timeSinceLastSpawn > spawnTime) {
-                Spawn();
+                spawn();
                 timeSinceLastSpawn = 0;
             }
         }
         for (Enemy e : enemyList) {
             if (e.isAlive()) {
                 allEnemiesDead = false;
-                e.Update();
-                e.Draw();
+                e.update();
+                e.draw();
             }
         }
         if (allEnemiesDead){
@@ -46,8 +44,8 @@ public class Wave {
         }
     }
 
-    private void Spawn() {
-        enemyList.add(new Enemy(enemyType.getTexture(), enemyType.getStartTile(), enemyType.getTileGrid(), 64,64, enemyType.getSpeed()));
+    private void spawn() {
+        enemyList.add(new Enemy(enemyType.getTexture(), enemyType.getStartTile(), enemyType.getTileGrid(), 64,64, enemyType.getSpeed(), enemyType.getHealth()));
 
     }
 

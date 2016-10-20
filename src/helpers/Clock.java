@@ -2,9 +2,7 @@ package helpers;
 
 import org.lwjgl.Sys;
 
-/**
- * Created by Евгений on 30.09.2016.
- */
+
 public class Clock {
     private static boolean paused = false;
     public static long lastFrame, totalTime;
@@ -43,7 +41,7 @@ public class Clock {
         d = getDelta();
         totalTime += d;
     }
-    public static void ChangeMultiplier(int change){
+    public static void ChangeMultiplier(float change){
         if (multiplier + change < -1 && multiplier + change >  7){
 
         }

@@ -1,9 +1,7 @@
 package data;
 
-/**
- * Created by Евгений on 06.10.2016.
- */
-public class WaveManager {
+
+public class  WaveManager {
     private float  timeSinceLastWawe, timeBetweenEnemies;
     private int  waveNumber, enemiesPerWave;
     private Enemy enemyType;
@@ -24,7 +22,7 @@ public class WaveManager {
 
     public void update(){
         if (!currentWave.isCompleted()){
-            currentWave.Update();
+            currentWave.update();
         }
         else
             newWave();

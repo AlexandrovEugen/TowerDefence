@@ -1,11 +1,9 @@
 package data;
 
 import static helpers.Artist.*;
-import static helpers.Clock.*;
 
-/**
- * Created by Евгений on 05.10.2016.
- */
+
+
 public class Game {
     private TileGrid grid;
     private Player player;
@@ -15,12 +13,12 @@ public class Game {
 
     public Game(int[][] map) {
         grid = new TileGrid(map);
-        waveManager = new WaveManager(new Enemy(QuickLoad("enemy64"), grid.GetTile(0,0), grid, 64, 64, 100), 2, 2);
+        waveManager = new WaveManager(new Enemy(QuickLoad("enemy64"), grid.getTile(0,0), grid, TILE_SIZE, TILE_SIZE, 100, 25), 2, 2);
         player = new Player(grid, waveManager);
     }
 
     public void update(){
-        grid.Draw();
+        grid.draw();
         waveManager.update();
         player.update();
     }

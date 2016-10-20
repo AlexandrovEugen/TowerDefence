@@ -15,12 +15,11 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
 import static org.lwjgl.opengl.GL11.glMatrixMode;
 
-/**
- * Created by Евгений on 29.09.2016.
- */
+
 public class Artist {
 
     public static final int WIDTH = 1280, HEIGHT = 960;
+    public static final int TILE_SIZE = 64;
 
     public static void BeginSession(){
         Display.setTitle("Tower Defence");
@@ -38,6 +37,13 @@ public class Artist {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    }
+
+    public static boolean checkCollision(float x1, float y1, float width1, float heght1, float x2, float y2, float width2, float heght2){
+        if (x1 + width1 > x2 && x1 < x2 + width2 && y1 + heght1 > y2 && y1 < y2 + heght2){
+            return true;
+        }
+        return false;
     }
 
     public static  void  DrawQuad(float x, float y, float width, float height){
@@ -96,7 +102,7 @@ public class Artist {
     }
 
     public static Texture QuickLoad(String name){
-        Texture tex = null;
+        Texture tex;
         tex = LoadTexture("res/" +  name + ".png", "PNG");
         return  tex;
     }

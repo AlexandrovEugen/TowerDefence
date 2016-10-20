@@ -1,8 +1,5 @@
 package data;
 
-/**
- * Created by Евгений on 01.10.2016.
- */
 public class Checkpoint {
     private Tile tile;
     private int xDirection, yDirection;
@@ -10,7 +7,6 @@ public class Checkpoint {
     public Tile getTile() {
         return tile;
     }
-
     public int getxDirection() {
         return xDirection;
     }
