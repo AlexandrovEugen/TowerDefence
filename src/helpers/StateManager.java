@@ -4,36 +4,28 @@ package helpers;
 import data.Editor;
 import data.Game;
 import data.MainMenu;
+import data.TileGrid;
+
+import static helpers.Leveler.loadMap;
 
 
 public class StateManager {
 
     public static enum GameState{
         MAINMENU, GAME, EDITOR
-        
     }
+
     public static GameState gameState = GameState.MAINMENU;
     public static MainMenu mainMenu;
     public static Game game;
     public static Editor editor;
 
-    static int[][] map = {
-            {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
-            {0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,0,0},
-            {0,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
-            {0,2,2,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,2,2,2,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0},
-            {0,2,2,2,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0},
-            {0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0},
-            {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
-            {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
-            {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    };
+
+    public static long nextSecond = System.currentTimeMillis() + 1000;
+    public static int  framesInLastSecond  = 0;
+    public static int framesInCurrentSecond = 0;
+
+    static  TileGrid map = loadMap("mapTest");
 
     public static void update(){
         switch (gameState) {
@@ -56,6 +48,13 @@ public class StateManager {
                 editor.update();
                 break;
         }
+        long currentTime =  System.currentTimeMillis();
+        if (currentTime > nextSecond){
+            nextSecond += 1000;
+            framesInLastSecond = framesInCurrentSecond;
+            framesInCurrentSecond = 0;
+        }
+        framesInCurrentSecond++;
     }
 
     public static void setState(GameState newState){

@@ -4,31 +4,34 @@ import api.Entity;
 import org.newdawn.slick.opengl.Texture;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static helpers.Artist.*;
-import static helpers.Artist.QuickLoad;
 import static helpers.Clock.Delta;
 
 
 public abstract class Tower implements Entity {
 
     private float x, y, timeSinceLastShot, firingSpeed, angle;
-    private int width, height, damage,range;
+    private int width, height, damage,range, cost;
 
     public Enemy getTarget() {
         return target;
     }
 
-    private Enemy target;
+    public Enemy target;
     private Texture[] textures;
-    private ArrayList<Enemy> enemies;
+    private CopyOnWriteArrayList<Enemy> enemies;
     private boolean targeted;
-    private ArrayList<Projectile> projectiles;
+    public ArrayList<Projectile> projectiles;
+    public TowerType type;
 
-    public Tower(TowerType type, Tile startTile, ArrayList<Enemy> enemies){
+    public Tower(TowerType type, Tile startTile, CopyOnWriteArrayList<Enemy> enemies){
+        this.type = type;
         this.textures = type.textures;
         this.damage = type.damage;
         this.range = type.range;
+        this.cost = type.cost;
         this.firingSpeed = type.firingSpeed;
         this.x = startTile.getX();
         this.y = startTile.getY();
@@ -45,7 +48,7 @@ public abstract class Tower implements Entity {
         Enemy closest = null;
         float closestDistance = 10000;
         for (Enemy e:enemies) {
-            if (isInRange(e) && findDistance(e) < closestDistance){
+            if (isInRange(e) && findDistance(e) < closestDistance && e.getHiddenHealth() > 0){
                 closestDistance = findDistance(e);
                 closest = e;
             }
@@ -54,6 +57,10 @@ public abstract class Tower implements Entity {
             targeted = true;
         }
         return  closest;
+    }
+
+    public int getCost() {
+        return cost;
     }
 
     private boolean isInRange(Enemy e){
@@ -78,29 +85,35 @@ public abstract class Tower implements Entity {
 
     private void shoot() {
         timeSinceLastShot = 0;
-        projectiles.add(new ProjectileIceball(QuickLoad("iceProjectile"),target, x + TILE_SIZE / 2 - TILE_SIZE / 4, y + TILE_SIZE / 2 - TILE_SIZE / 4, TILE_SIZE / 2, TILE_SIZE / 2, 900, 10));
+ //       projectiles.add(new ProjectileIceball(QuickLoad("iceProjectile"),target, x + TILE_SIZE / 2 - TILE_SIZE / 4, y + TILE_SIZE / 2 - TILE_SIZE / 4, TILE_SIZE / 2, TILE_SIZE / 2, 900, 10));
 
     }
 
-    public void updateEnemyList(ArrayList<Enemy> newList){
+    public abstract void shoot(Enemy target);
+
+    public void updateEnemyList(CopyOnWriteArrayList<Enemy> newList){
         enemies = newList;
     }
 
 
 
     public void update(){
-        if (!targeted){
+        if (!targeted || target.getHiddenHealth() < 0){
             target = acquireTarget();
+        }
+        else {
+            angle = calculateAngle();
+            if (timeSinceLastShot > firingSpeed) {
+                shoot(target);
+                timeSinceLastShot = 0;
+
+            }
         }
         if (target == null || !target.isAlive()){
             targeted = false;
         }
         timeSinceLastShot += Delta();
-        if (timeSinceLastShot > firingSpeed){
-            shoot();
-        }
         projectiles.forEach(Projectile::update);
-        angle = calculateAngle();
         draw();
     }
 

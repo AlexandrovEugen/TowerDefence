@@ -1,31 +1,35 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import static helpers.Clock.*;
 
 
 
 public class Wave {
     private float timeSinceLastSpawn, spawnTime;
-    private Enemy enemyType;
-    private ArrayList<Enemy>  enemyList;
-    private int enemiesPerWave;
+    private Enemy[] enemyTypes;
+    private CopyOnWriteArrayList<Enemy>  enemyList;
+    private int enemiesPerWave, enemySpawned;
     private boolean waveCompleted;
 
 
-    public Wave(Enemy enemyType,float spawnTime, int enemiesPerWave){
+    public Wave(Enemy[] enemyTypes,float spawnTime, int enemiesPerWave){
         this.spawnTime = spawnTime;
-        this.enemyType = enemyType;
+        this.enemyTypes = enemyTypes;
         this.timeSinceLastSpawn = 0;
-        this.enemyList = new ArrayList<>();
+        this.enemyList = new CopyOnWriteArrayList<>();
         this.enemiesPerWave = enemiesPerWave;
+        this.enemySpawned = 0;
         this.waveCompleted = false;
         spawn();
     }
 
     public void update(){
         boolean allEnemiesDead = true;
-        if (enemyList.size() < enemiesPerWave) {
+        if (enemySpawned  < enemiesPerWave) {
             timeSinceLastSpawn += Delta();
             if (timeSinceLastSpawn > spawnTime) {
                 spawn();
@@ -38,6 +42,9 @@ public class Wave {
                 e.update();
                 e.draw();
             }
+            else {
+                enemyList.remove(e);
+            }
         }
         if (allEnemiesDead){
             waveCompleted = true;
@@ -45,7 +52,11 @@ public class Wave {
     }
 
     private void spawn() {
-        enemyList.add(new Enemy(enemyType.getTexture(), enemyType.getStartTile(), enemyType.getTileGrid(), 64,64, enemyType.getSpeed(), enemyType.getHealth()));
+        int enemyChosen = 0;
+        Random rnd = new Random();
+        enemyChosen = rnd.nextInt(enemyTypes.length);
+        enemyList.add(new Enemy(enemyTypes[enemyChosen].getTexture(), enemyTypes[enemyChosen].getStartTile(), enemyTypes[enemyChosen].getTileGrid(), 64,64, enemyTypes[enemyChosen].getSpeed(), enemyTypes[enemyChosen].getHealth()));
+        enemySpawned++;
 
     }
 
@@ -53,7 +64,7 @@ public class Wave {
         return waveCompleted;
     }
 
-    public ArrayList<Enemy> getEnemyList() {
+    public CopyOnWriteArrayList<Enemy> getEnemyList() {
         return enemyList;
     }
 }

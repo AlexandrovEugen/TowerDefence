@@ -18,14 +18,14 @@ public abstract class Projectile implements Entity{
     private int width;
     private int height;
 
-    public Projectile(Texture texture,Enemy target, float x, float y, int width, int height, float speed, int damage) {
-        this.texture = texture;
+    public Projectile(ProjectileType type, Enemy target, float x, float y, int width, int height) {
+        this.texture = type.texture;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.speed = speed;
-        this.damage = damage;
+        this.speed = type.speed;
+        this.damage = type.damage;
         this.target = target;
         this.alive = true;
         this.xVelocity = 0f;
@@ -105,6 +105,7 @@ public abstract class Projectile implements Entity{
 
     public  void update(){
         if (alive) {
+            calculateDirection();
             x += xVelocity * speed * Delta();
             y += yVelocity * speed * Delta();
             if (checkCollision(x, y, width, height, target.getX(), target.getY(), target.getWidth(), target.getHeight())) {

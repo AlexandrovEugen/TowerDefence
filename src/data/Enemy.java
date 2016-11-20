@@ -13,14 +13,43 @@ import static helpers.Clock.*;
 public class Enemy implements Entity {
 
     private int width, height, currentCheckPoint;
-    private float x,y, speed, health, startHealth;
+    private float x,y, speed, health, startHealth, hiddenHealth;
     private Texture texture, healthBackground, healthForeground, healthBorder;
     private Tile startTile;
-    private boolean first = true, alive = true;
+    private boolean first, alive;
     private TileGrid grid;
     private int[] directions;
     private ArrayList<Checkpoint> checkpoints;
 
+    //default constructor
+    public Enemy(int tileX, int tileY, TileGrid grid){
+        this.texture = QuickLoad("enemyFloating_1");
+        this.healthBackground = QuickLoad("healthBackGround");
+        this.healthForeground = QuickLoad("healthForeground");
+        this.healthBorder = QuickLoad("healthBorder");
+        this.startTile = grid.getTile(tileX, tileY);
+        this.x = startTile.getX();
+        this.y = startTile.getY();
+        this.width = TILE_SIZE;
+        this.height = TILE_SIZE;
+        this.health = 50;
+        this.speed = 50;
+        this.startHealth = health;
+        this.hiddenHealth = health;
+        this.grid = grid;
+        this.checkpoints = new ArrayList<>();
+        this.directions = new int[2];
+        //x direction
+        this.directions[0] = 0;
+        //y direction
+        this.directions[1] = 0;
+        directions = findNextD(startTile);
+        this.currentCheckPoint = 0;
+        this.first = true;
+        this.alive = true;
+        populateCheckpointList();
+
+    }
 
     public Enemy(Texture texture,Tile startTile, TileGrid grid, int width, int height, float speed, float health) {
         this.texture = texture;
@@ -34,8 +63,8 @@ public class Enemy implements Entity {
         this.height = height;
         this.health = health;
         this.startHealth = health;
+        this.hiddenHealth = health;
         this.speed = speed;
-        this.health = health;
         this.grid = grid;
         this.checkpoints = new ArrayList<>();
         this.directions = new int[2];
@@ -45,9 +74,18 @@ public class Enemy implements Entity {
         this.directions[1] = 0;
         directions = findNextD(startTile);
         this.currentCheckPoint = 0;
+        this.first = true;
+        this.alive = true;
         populateCheckpointList();
     }
 
+    public void reduceHiddenHealth(float amount){
+        hiddenHealth -=amount;
+    }
+
+    public float getHiddenHealth(){
+        return  hiddenHealth;
+    }
     public int getWidth() {
         return width;
     }
@@ -88,6 +126,9 @@ public class Enemy implements Entity {
         this.y = y;
     }
 
+    public void setTexture(String name){
+        this.texture = QuickLoad(name);
+    }
 
     public float getSpeed() {
         return speed;
@@ -133,6 +174,7 @@ public class Enemy implements Entity {
         health -=  amount;
         if (health <= 0){
             die();
+            Player.modifyCash(5);
         }
     }
 
@@ -146,7 +188,7 @@ public class Enemy implements Entity {
         else {
             if (checkPointReached()) {
                 if (currentCheckPoint + 1 == checkpoints.size())
-                    die();
+                    endOfMazeReached();
                 else
                     currentCheckPoint++;
             } else {
@@ -154,6 +196,11 @@ public class Enemy implements Entity {
                 y += Delta() * checkpoints.get(currentCheckPoint).getyDirection() * speed;
             }
         }
+    }
+
+    private void endOfMazeReached(){
+        Player.modifyLives(-1);
+        die();
     }
 
     private boolean checkPointReached(){
